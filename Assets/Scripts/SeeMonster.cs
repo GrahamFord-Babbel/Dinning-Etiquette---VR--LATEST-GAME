@@ -10,7 +10,7 @@ public class SeeMonster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        monster.gameObject.SetActive(false);
+        //monster.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
