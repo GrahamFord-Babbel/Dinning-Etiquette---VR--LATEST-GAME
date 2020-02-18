@@ -9,6 +9,5 @@ public class SpawnManagerScriptableObject : ScriptableObject
     public GameObject prefab;
 
     public int numberOfPrefabsToCreate;
-    public Vector3[] spawnPoints;
     public int points;
 }

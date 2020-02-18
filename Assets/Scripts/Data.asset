@@ -15,8 +15,8 @@ MonoBehaviour:
   prefabName: BabyCollectible
   prefab: {fileID: 6214205172589983324, guid: bb897e51ac6f007489c46c5c81452617, type: 3}
   numberOfPrefabsToCreate: 3
-  spawnPoints:
-  - {x: 4, y: 3, z: 0}
-  - {x: 5, y: 4, z: 0}
-  - {x: 6, y: 3, z: 1}
+  spawnLocations:
+  - {x: 3, y: 0, z: 1}
+  - {x: 3, y: 0, z: 0.5}
+  - {x: 3, y: 0, z: 0}
   points: 1

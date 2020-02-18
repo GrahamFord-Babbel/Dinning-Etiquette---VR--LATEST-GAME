@@ -15,11 +15,16 @@ public class ScoreKeeper : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update ()
-    {
+    //FIGURE OUT HOW TO MAKE THIS CONDENSED VERSION OF THE TWO WORK:
+    //public void Scored(string who, int points)
+    //{
+    //        who = who + points;
 
-    }
+    //   // -delete all this if "who" works
+
+    //    ////increment score 1 higher    
+    //    //dadScore = dadScore + points;
+    //}
 
     public void DadScored(int points)
     {
@@ -29,6 +34,6 @@ public class ScoreKeeper : MonoBehaviour {
     public void BabyScored(int points)
     {
         //increment score 1 higher    
-        dadScore = dadScore + points;
+        babyScore = babyScore + points;
     }
 }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2674196688456324343}
   m_Layer: 0
   m_Name: BabyBottle
-  m_TagString: BabyObject
+  m_TagString: BabyCollectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6214205172589983324}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.758273, y: 3.276, z: -0.4358}
   m_LocalScale: {x: 6.8775997, y: 6.8775997, z: 6.8775997}
   m_Children: []
