@@ -17,6 +17,9 @@ public class Spawner : MonoBehaviour {
     //fork object for dropping
     public GameObject fork;
 
+    //let player know fork dropped (stop running active function)
+    public bool forkDropped;
+
     // Use this for initialization
     void Start () {
         fork.SetActive(false);
@@ -26,9 +29,11 @@ public class Spawner : MonoBehaviour {
     public void Update()
     {
         //if its been long enough, reactivate the fork
-        if(Time.realtimeSinceStartup >= dropForkTime)
+        if(Time.realtimeSinceStartup >= dropForkTime && !forkDropped)
         {
             fork.SetActive(true);
+            forkDropped = true;
+            print("the FORK has been dropped! Activate Audio HERE!");
         }
     }
 

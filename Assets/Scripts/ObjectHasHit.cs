@@ -14,6 +14,11 @@ public class ObjectHasHit : MonoBehaviour
 
     //NOTE: THESE ARE SUPER REPEATATIVE CODE PIECES, CAN WE COMBINE THEM INTO 1?
 
+    public void Start()
+    {
+        enVironment = this.gameObject;
+    }
+
     //will be used for changing scores that hit players
     public void OnTriggerEnter(Collider other)
     {
@@ -47,7 +52,7 @@ public class ObjectHasHit : MonoBehaviour
                         break;
                 }
                 //change dad's score appropriately (this was a good effort of removing duplicacy of method call by instead simply changing pointsChanged. Good Job.)
-                scoreKeeper.DadScoreChanged(pointsChanged);
+                //scoreKeeper.DadScoreChanged(pointsChanged);
 
                 //remove the CollectibleObjects once collected
                 Destroy(collisionObject);
@@ -62,14 +67,14 @@ public class ObjectHasHit : MonoBehaviour
         collisionObject = other.gameObject;
 
         //checks to see if the object that collided with Dad originated from the Spawner
-        if (collisionObject.tag == "BabyCollectible")
+        if (collisionObject.tag == "BabyCollectible" || collisionObject.tag == "BabyWeapon")
         {
             //for when object hits ground
             if (this.gameObject == enVironment)
             {
                 //Increment Dad Score - get IncrementScore by __ from ScoreKeeper - specific to the Gameobjects Points (Negative or Positive)
                 //scoreKeeper.Scored("babyScore", 1);
-                scoreKeeper.BabyScoreChanged(1);
+                //scoreKeeper.BabyScoreChanged(1);
 
                 //checks to see if of type increase is working
                 Debug.Log(enVironment.name + " for Baby Score Increase");
