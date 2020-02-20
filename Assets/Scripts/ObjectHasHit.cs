@@ -10,6 +10,7 @@ public class ObjectHasHit : MonoBehaviour
     public GameObject babyPlayer;
     public GameObject enVironment;
     private GameObject collisionObject;
+    private int pointsChanged;
 
     //NOTE: THESE ARE SUPER REPEATATIVE CODE PIECES, CAN WE COMBINE THEM INTO 1?
 
@@ -19,18 +20,34 @@ public class ObjectHasHit : MonoBehaviour
         //stores the object using that objects collider
         collisionObject = other.gameObject;
 
-        //checks to see if the object that collided with Dad originated from the Spawner
-        if (collisionObject.tag == "BabyCollectible")
+        //for when object hits dad
+        if (this.gameObject == dadPlayer) //make this tag type player
         {
-            //for when object hits dad
-            if (this.gameObject == dadPlayer) //make this tag type player
+            //ISSUE HERE! - This check is a redundancy I was trying to remove using switch, but seems this still needs to be implemented to not delete wrong objects
+            if (collisionObject.tag == "BabyCollectible" || collisionObject.tag == "BabyWeapon")
             {
-                //Increment Dad Score - get IncrementScore by __ from ScoreKeeper - specific to the Gameobjects Points (Negative or Positive)
-                //scoreKeeper.Scored("dadScore", 1);
-                scoreKeeper.DadScored(1);
+                //determine to add or subtract based on what object hit Dad
+                switch (collisionObject.tag)
+                {
+                    case "BabyCollectible":
+                        //Increment Dad Score - get IncrementScore by __ from ScoreKeeper - specific to the Gameobjects Points (Negative or Positive)
+                        //scoreKeeper.Scored("dadScore", 1);
+                        pointsChanged = 1;
 
-                //checks to see if of type increase is working
-                Debug.Log("Dad Score Increased!");
+                        //notifies change
+                        Debug.Log("Dad Score Increased!");
+                        break;
+                    case "BabyWeapon":
+                        pointsChanged = -1;
+                        //notifies change
+                        Debug.Log("Dad Score Decreased!");
+                        break;
+                    default:
+                        Debug.Log("DON'T KNOW WHAT OBJECT HIT " + dadPlayer.name);
+                        break;
+                }
+                //change dad's score appropriately (this was a good effort of removing duplicacy of method call by instead simply changing pointsChanged. Good Job.)
+                scoreKeeper.DadScoreChanged(pointsChanged);
 
                 //remove the CollectibleObjects once collected
                 Destroy(collisionObject);
@@ -52,7 +69,7 @@ public class ObjectHasHit : MonoBehaviour
             {
                 //Increment Dad Score - get IncrementScore by __ from ScoreKeeper - specific to the Gameobjects Points (Negative or Positive)
                 //scoreKeeper.Scored("babyScore", 1);
-                scoreKeeper.BabyScored(1);
+                scoreKeeper.BabyScoreChanged(1);
 
                 //checks to see if of type increase is working
                 Debug.Log(enVironment.name + " for Baby Score Increase");

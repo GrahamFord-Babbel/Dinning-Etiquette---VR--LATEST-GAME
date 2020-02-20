@@ -26,12 +26,12 @@ public class ScoreKeeper : MonoBehaviour {
     //    //dadScore = dadScore + points;
     //}
 
-    public void DadScored(int points)
+    public void DadScoreChanged(int points)
     {
         //increment score 1 higher    
         dadScore = dadScore + points;
     }
-    public void BabyScored(int points)
+    public void BabyScoreChanged(int points)
     {
         //increment score 1 higher    
         babyScore = babyScore + points;
