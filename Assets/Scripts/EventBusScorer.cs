@@ -25,11 +25,11 @@ public class EventBusScorer : MonoBehaviour
         {
             if (objectHitter.tag == "BabyCollectible")
             {
-                pointsChanged = 1;
+                pointsChanged = -1;
             }
             else if (objectHitter.tag == "BabyWeapon")
             {
-                pointsChanged = -1;
+                pointsChanged = 2;
             }
 
             //destroy obj
@@ -62,8 +62,6 @@ public class EventBusScorer : MonoBehaviour
             {
                 pointsChanged = 1;
             }
-            //destroy obj
-            Destroy(objectHitter);
 
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
         }

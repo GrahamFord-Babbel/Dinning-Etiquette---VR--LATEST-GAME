@@ -19,6 +19,6 @@ public class ScoreDisplay : MonoBehaviour {
 	void Update ()
     {
         //update the display to count updated score
-        scoreText.text = "Baby's Score: " + scoreKeeper.babyScore;
+        scoreText.text = "Baby's Score: " + scoreKeeper.gameScore;
 	}
 }
