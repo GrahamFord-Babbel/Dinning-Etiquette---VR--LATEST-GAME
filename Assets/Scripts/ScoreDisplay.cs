@@ -8,9 +8,10 @@ public class ScoreDisplay : MonoBehaviour {
 
     public ScoreKeeper scoreKeeper;
     public Text scoreText;
+    public Text timeText;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         //scoreKeeper = FindObjectOfType<ScoreKeeper>();
         //scoreText = GetComponent<Text>();
     }
@@ -20,5 +21,6 @@ public class ScoreDisplay : MonoBehaviour {
     {
         //update the display to count updated score
         scoreText.text = "Baby's Score: " + scoreKeeper.gameScore;
-	}
+        timeText.text = "Time Remaining: " + scoreKeeper.timeRemaining;
+    }
 }

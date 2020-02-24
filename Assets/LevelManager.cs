@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[] uIs;
     public ScoreKeeper scoreKeeper;
     public float currentTime;
+    public float timeRemaining;
     public float gameOverTime;
     public int gameOverScore;
     public bool gameOver;
@@ -44,6 +45,8 @@ public class LevelManager : MonoBehaviour
         if(startTimer == true)
         {
             currentTime += Time.deltaTime;
+            timeRemaining = gameOverTime - currentTime;
+            scoreKeeper.timeRemaining = timeRemaining;
         }
 
         //start game/remove UIs
