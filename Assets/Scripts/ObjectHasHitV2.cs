@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class ObjectHasHitV2 : MonoBehaviour
 {
-    //get the two pieces of data necessary to inform EventBus
+    //get the two pieces of data necessary to inform EventBus - make these private?
     public GameObject objectHit;
     public GameObject objectHitter;
 
     //get the EventBus to register this as a Publisher
     public EventBusScorer eventBusScorer;
 
-    //NOTE: THESE ARE SUPER REPEATATIVE CODE PIECES, CAN WE COMBINE THEM INTO 1?
+    //get the MovementAI - to log positions of thrown objects for collection
+    public MovementAI movementAI;
+
+    //NOTE: THESE ARE REPEATATIVE CODE PIECES, CAN WE COMBINE THEM INTO 1?
 
     public void Start()
     {
@@ -22,6 +25,7 @@ public class ObjectHasHitV2 : MonoBehaviour
     //will be used for changing scores that hit players
     public void OnTriggerEnter(Collider other)
     {
+        //only progress if Dad character is objectHit
         if (objectHit.name != "EnvironmentTrigger")
         {
             //stores the object using that objects collider
@@ -33,7 +37,17 @@ public class ObjectHasHitV2 : MonoBehaviour
                 //Call Event Bus Score Compiler/Processor with parameters
                 eventBusScorer.AssessScoreChange(objectHit, objectHitter);
 
-                //calling Destroy Object here had issues
+                //STARTING AI ACTIONS HERE:
+                if (movementAI.enabled)
+                {
+                    //removes the objectHitter from AIMovement List
+                    movementAI.listOfThrownObjects.Remove(objectHitter.transform);
+                    //calls the pickup script
+                    if (movementAI.listOfThrownObjects.Count != 0)
+                    {
+                        movementAI.PickUpObject();
+                    }
+                }
             }
         }
     }
@@ -49,8 +63,15 @@ public class ObjectHasHitV2 : MonoBehaviour
         {
             //Call Event Bus Score Compiler/Processor with parameters
             eventBusScorer.AssessScoreChange(objectHit,objectHitter);
-        }
 
-            //calling Destroy Object here had issues
+            //STARTING AI ACTIONS HERE:
+            if (movementAI.enabled)
+            {
+                //adds the objectHitter to AIMovement List
+                movementAI.listOfThrownObjects.Add(objectHitter.transform);
+                //calls the pickup script
+                movementAI.PickUpObject();
+            }
+        }
     }
 }
