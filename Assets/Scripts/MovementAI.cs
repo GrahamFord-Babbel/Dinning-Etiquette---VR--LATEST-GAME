@@ -35,8 +35,22 @@ public class MovementAI : MonoBehaviour
     }
 
     //a script that calls set destination?
-    public void PickUpObject()
+    public void PickUpObject(int incrementAmount, GameObject thrownObject)
     {
+        //if object hit floor, add
+        if(incrementAmount > 0)
+        {
+            listOfThrownObjects.Add(thrownObject.transform);
+        }
+        //if object hit dad, remove
+        if(incrementAmount < 0)
+        {
+            listOfThrownObjects.Remove(thrownObject.transform);
+        }
+        //only set a destination if there is still an object in the LIST
+        if(listOfThrownObjects.Count != 0)
+        {
             agent.SetDestination(listOfThrownObjects[0].position);
+        }
     }
 }

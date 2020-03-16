@@ -552,6 +552,8 @@ GameObject:
   m_Component:
   - component: {fileID: 47216373}
   - component: {fileID: 47216370}
+  - component: {fileID: 47216371}
+  - component: {fileID: 47216369}
   m_Layer: 0
   m_Name: FloorCollider
   m_TagString: Untagged
@@ -559,6 +561,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!114 &47216369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47216368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5743eab0dea9306478adced34b1ddb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectHit: {fileID: 0}
+  objectHitter: {fileID: 0}
+  eventBusScorer: {fileID: 0}
 --- !u!65 &47216370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -571,6 +588,19 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 9.999999, y: 2.2204459e-16, z: 9.999999}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &47216371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47216368}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.999999, y: 2, z: 9.999999}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &47216373
 Transform:
@@ -625,8 +655,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51752732}
   m_LocalRotation: {x: 0, y: 0.953717, z: 0, w: 0.30070582}
-  m_LocalPosition: {x: -3.82, y: 2, z: -2.94}
-  m_LocalScale: {x: 2.8682003, y: 2.8682, z: 2.8682003}
+  m_LocalPosition: {x: -3.06, y: 1.48, z: -2.41}
+  m_LocalScale: {x: 1.8792735, y: 1.8792734, z: 1.8792735}
   m_Children:
   - {fileID: 1791980500}
   m_Father: {fileID: 320055264}
@@ -1248,8 +1278,9 @@ MonoBehaviour:
   scoreKeeper: {fileID: 571521136}
   dadPlayer: {fileID: 919309615}
   babyPlayer: {fileID: 1465771003}
-  enVironment: {fileID: 1164548073}
+  enVironment: {fileID: 47216368}
   forkZone: {fileID: 1071480868}
+  movementAI: {fileID: 919309619}
 --- !u!1001 &216354072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1906,7 +1937,7 @@ MonoBehaviour:
   - {fileID: 364524735}
   - {fileID: 801333297}
   dropForkTime: 5
-  spawnWait: 2
+  spawnWait: 10
   fork: {fileID: 709826996}
   forkDropped: 0
 --- !u!4 &428235355
@@ -1970,8 +2001,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558985926}
   m_LocalRotation: {x: -0, y: 0.9733657, z: -0, w: -0.2292579}
-  m_LocalPosition: {x: -4.76, y: 2, z: 4.1}
-  m_LocalScale: {x: 2.8682003, y: 2.8682, z: 2.8682003}
+  m_LocalPosition: {x: -2.66, y: 1.56, z: 2.62}
+  m_LocalScale: {x: 2.0364223, y: 2.036422, z: 2.0364223}
   m_Children:
   - {fileID: 66531877}
   m_Father: {fileID: 320055264}
@@ -2887,10 +2918,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.6
-  m_Speed: 10
-  m_Acceleration: 10
+  m_Speed: 2
+  m_Acceleration: 2
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 50
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -2959,7 +2990,6 @@ MonoBehaviour:
   objectHit: {fileID: 0}
   objectHitter: {fileID: 0}
   eventBusScorer: {fileID: 0}
-  movementAI: {fileID: 919309619}
 --- !u!65 &919309624
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3297,7 +3327,6 @@ MonoBehaviour:
   objectHit: {fileID: 0}
   objectHitter: {fileID: 0}
   eventBusScorer: {fileID: 0}
-  movementAI: {fileID: 0}
 --- !u!1 &1115504790
 GameObject:
   m_ObjectHideFlags: 0
@@ -3597,15 +3626,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1164548074}
   - component: {fileID: 1164548076}
-  - component: {fileID: 1164548077}
-  - component: {fileID: 1164548075}
   m_Layer: 0
-  m_Name: EnvironmentTrigger
+  m_Name: EnvironmentTriggerOLD
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1164548074
 Transform:
   m_ObjectHideFlags: 0
@@ -3614,25 +3641,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164548073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.37, y: 4.39, z: 0.15}
+  m_LocalPosition: {x: -0.37, y: 5.99, z: 0.15}
   m_LocalScale: {x: 14.704696, y: 6.3720345, z: 12.253913}
   m_Children: []
   m_Father: {fileID: 320055264}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1164548075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164548073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
 --- !u!65 &1164548076
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3644,24 +3658,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1164548077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164548073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5743eab0dea9306478adced34b1ddb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectHit: {fileID: 0}
-  objectHitter: {fileID: 0}
-  eventBusScorer: {fileID: 0}
-  movementAI: {fileID: 919309619}
+  m_Size: {x: 1.5, y: 1.69, z: 1.5}
+  m_Center: {x: 0, y: 0.16, z: 0}
 --- !u!1 &1165756928
 GameObject:
   m_ObjectHideFlags: 0
@@ -5714,7 +5712,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2143007624
 Transform:
   m_ObjectHideFlags: 0

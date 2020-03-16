@@ -17,12 +17,23 @@ public class EventBusScorer : MonoBehaviour
     //provide a value to control Score change
     private int pointsChanged;
 
+    //get the MovementAI - to log positions of thrown objects for collection
+    public MovementAI movementAI;
+
     //determine what value pointsChange should be based on data from collision events
     public void AssessScoreChange(GameObject objectHit, GameObject objectHitter)
     {
-        //points based on if object hit Dad
+        //based on if object hit Dad
         if (objectHit == dadPlayer)
         {
+            //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+            if (movementAI.enabled)
+            {
+                Debug.Log("DAT SHIT REMOVED BABY!");
+                //calls the pickup script
+                movementAI.PickUpObject(-1, objectHitter);
+            }
+            //SCORING ACTIONS
             if (objectHitter.tag == "BabyCollectible")
             {
                 pointsChanged = -1;
@@ -38,7 +49,7 @@ public class EventBusScorer : MonoBehaviour
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
         }
 
-        //points based on if object hit forkzone
+        //based on if object hit forkzone
         else if (objectHit == forkZone)
         {
             if (objectHitter.tag == "BabyCollectible")
@@ -55,18 +66,28 @@ public class EventBusScorer : MonoBehaviour
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
         }
 
-        //points based on if object hit environment
+        //based on if object hit environment
         else if (objectHit == enVironment)
         {
+            //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+            if (movementAI.enabled)
+            {
+                Debug.Log("DAT SHIT ADDED BABY!");
+                //calls the pickup script
+                movementAI.PickUpObject(1, objectHitter);
+            }
+
+            //SCORING ACTIONS
             if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
             {
                 pointsChanged = 1;
             }
 
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+
         }
 
-        //points based on if object hit baby
+        //based on if object hit baby
         else if (objectHit == babyPlayer)
         {
             print("Who would hit a baby!");
