@@ -9,7 +9,7 @@ public class MovementAI : MonoBehaviour
     public NavMeshAgent agent;
 
     //list of current and future objects AI will go to (pick up)
-    public List<Transform> listOfThrownObjects = new List<Transform>();
+    public List<GameObject> listOfThrownObjects = new List<GameObject>();
 
     //need to start here - 1) how to initiate the first pickup (decoupled), 2) how to initiate going to next pick up (on dad destroy)
     void Update()
@@ -40,17 +40,20 @@ public class MovementAI : MonoBehaviour
         //if object hit floor, add
         if(incrementAmount > 0)
         {
-            listOfThrownObjects.Add(thrownObject.transform);
+            listOfThrownObjects.Add(thrownObject);
+
         }
         //if object hit dad, remove
         if(incrementAmount < 0)
         {
-            listOfThrownObjects.Remove(thrownObject.transform);
+            listOfThrownObjects.Remove(thrownObject);
         }
         //only set a destination if there is still an object in the LIST
         if(listOfThrownObjects.Count != 0)
         {
-            agent.SetDestination(listOfThrownObjects[0].position);
+            //make a conditional here that if Dad hits objects, dong carry out this action???
+
+            agent.SetDestination(listOfThrownObjects[0].transform.position);
         }
     }
 }

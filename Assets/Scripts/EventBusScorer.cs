@@ -20,6 +20,7 @@ public class EventBusScorer : MonoBehaviour
     //get the MovementAI - to log positions of thrown objects for collection
     public MovementAI movementAI;
 
+
     //determine what value pointsChange should be based on data from collision events
     public void AssessScoreChange(GameObject objectHit, GameObject objectHitter)
     {
@@ -32,6 +33,21 @@ public class EventBusScorer : MonoBehaviour
                 Debug.Log("DAT SHIT REMOVED BABY!");
                 //calls the pickup script
                 movementAI.PickUpObject(-1, objectHitter);
+
+                //trying adding the below conditional if breaks again 3.23
+                //RACE Conflict - object getting delete before removed from list if player fast
+                //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
+                //{
+                    //DOES NOT WORK, because race condition with pickup removing it
+                    //destroy obj
+                    Destroy(objectHitter);
+                //}
+            }
+            //RACE Conflict - object getting delete before removed from list if player fast
+            else if (movementAI.enabled == false)
+            {
+                //destroy obj
+                Destroy(objectHitter);
             }
             //SCORING ACTIONS
             if (objectHitter.tag == "BabyCollectible")
@@ -42,9 +58,6 @@ public class EventBusScorer : MonoBehaviour
             {
                 pointsChanged = 2;
             }
-
-            //destroy obj
-            Destroy(objectHitter);
 
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
         }

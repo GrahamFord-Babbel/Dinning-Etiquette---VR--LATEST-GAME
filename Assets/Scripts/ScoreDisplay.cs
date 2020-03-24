@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ScoreDisplay : MonoBehaviour {
+public class ScoreDisplay : MonoBehaviour
+{
 
     //Script Purpose: To collect the current score from ScoreKeeper and display it for the user
 

@@ -237,6 +237,9 @@ public class OVRGrabber : MonoBehaviour
                     closestGrabbable = grabbable;
                     closestGrabbableCollider = grabbableCollider;
                 }
+
+                //grabbableCollider.gameObject.GetComponent
+
             }
         }
 
