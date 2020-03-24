@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class Spawner : MonoBehaviour {
+
+    //get normcore tools
+    private Realtime _realtime;
+    public bool connectedSpawn;
 
     public SpawnManagerScriptableObject ObjectToSpawn;
     public Transform SpawnLocation;
@@ -20,16 +25,34 @@ public class Spawner : MonoBehaviour {
     //let player know fork dropped (stop running active function)
     public bool forkDropped;
 
+    private void Awake()
+    {
+        // Get the Realtime component on this game object
+        _realtime = GetComponent<Realtime>();
+
+        _realtime.didConnectToRoom += DidConnectToRoom;
+    }
+
     // Use this for initialization
     void Start () {
         fork.SetActive(false);
-        InvokeRepeating("GenerateObject", Random.Range(0,4),spawnWait);
+
+        // Notify us when Realtime successfully connects to the room
+        _realtime.didConnectToRoom += DidConnectToRoom;
+
+        //InvokeRepeating("GenerateObject", Random.Range(0,4),spawnWait);
 	}
 
     public void Update()
     {
+
+        if (connectedSpawn)
+        {
+            InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
+            connectedSpawn = false;
+        }
         //if its been long enough, reactivate the fork
-        if(Time.realtimeSinceStartup >= dropForkTime && !forkDropped)
+        if (Time.realtimeSinceStartup >= dropForkTime && !forkDropped)
         {
             fork.SetActive(true);
             forkDropped = true;
@@ -37,9 +60,23 @@ public class Spawner : MonoBehaviour {
         }
     }
 
+    private void DidConnectToRoom(Realtime realtime)
+    {
+        Debug.Log("Connected to room, again, is this needed?");
+        connectedSpawn = true;
+    }
+
     public void GenerateObject()
     {
-        Instantiate(ObjectToSpawn.prefab, spawnLocations[Random.Range(0,3)].position, transform.rotation * Quaternion.Euler(-90f, 0f, 0f));
+        //removing this version of instantiate to make room for the multiplayer version
+        //Instantiate(ObjectToSpawn.prefab, spawnLocations[Random.Range(0,3)].position, transform.rotation * Quaternion.Euler(-90f, 0f, 0f));
         //ObjectToSpawn.transform.localScale = Vector3.one * Random.Range(objectSizeMin, objectSizeMax);
+
+        Realtime.Instantiate("BabyBottle",                 // Prefab name
+                                position: spawnLocations[Random.Range(0, 3)].position,          // Start 1 meter in the air
+                                rotation: transform.rotation * Quaternion.Euler(-90f, 0f, 0f), // No rotation
+                           ownedByClient: false,   // Make sure the RealtimeView on this prefab is owned by this client
+               preventOwnershipTakeover: true,                // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
+                            useInstance: _realtime);
     }
 }

@@ -3,10 +3,9 @@ using Normal.Realtime;
 
 namespace Normal.Realtime.Examples {
     public class CubePlayer : MonoBehaviour {
-        public float speed = 10.0f;
 
         private RealtimeView      _realtimeView;
-        public RealtimeTransform _realtimeTransform;
+        private RealtimeTransform _realtimeTransform;
 
         private void Awake() {
             _realtimeView      = GetComponent<RealtimeView>();
