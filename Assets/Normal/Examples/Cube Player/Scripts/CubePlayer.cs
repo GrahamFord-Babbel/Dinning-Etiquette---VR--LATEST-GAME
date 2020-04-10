@@ -1,24 +1,22 @@
 ﻿using UnityEngine;
 using Normal.Realtime;
 
-namespace Normal.Realtime.Examples {
-    public class CubePlayer : MonoBehaviour {
+namespace Normal.Realtime.Examples
+{
+    public class CubePlayer : MonoBehaviour
+    {
 
-        private RealtimeView      _realtimeView;
+        private RealtimeView _realtimeView;
         private RealtimeTransform _realtimeTransform;
 
-        private void Awake() {
-            _realtimeView      = GetComponent<RealtimeView>();
-           _realtimeTransform = GetComponent<RealtimeTransform>();
-        }
-
-        private void Start()
+        private void Awake()
         {
-            //_realtimeTransform.RequestOwnership();
-            //_realtimeTransform.RequestOwnership();
+            _realtimeView = GetComponent<RealtimeView>();
+            _realtimeTransform = GetComponent<RealtimeTransform>();
         }
 
-        private void Update() {
+        private void Update()
+        {
 
             //_realtimeTransform.RequestOwnership();
 
@@ -26,7 +24,12 @@ namespace Normal.Realtime.Examples {
             {
                 _realtimeTransform.RequestOwnership();
             }
+        }
+    }
+}
 
+
+//other attempted shit
             //if (GetComponent<Rigidbody>().isKinematic)
             //{
             //    // If this CubePlayer prefab is not owned by this client, bail.
@@ -39,7 +42,7 @@ namespace Normal.Realtime.Examples {
 
             ////move the cube for DinEt Dad
             //transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0f, Input.GetAxis("Vertical") * Time.deltaTime * speed);
-        }
+        //}
 
         //private void OnTriggerEnter(Collider other)
         //{
@@ -52,5 +55,5 @@ namespace Normal.Realtime.Examples {
         //    // Make sure we own the transform so that RealtimeTransform knows to use this client's transform to synchronize remote clients.
         //    realtimeTransform.RequestOwnership();
         //}
-    }
-}
+    //}
+//}

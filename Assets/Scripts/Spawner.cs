@@ -35,19 +35,20 @@ public class Spawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        //disable the fork
         fork.SetActive(false);
 
         // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
-
-        //InvokeRepeating("GenerateObject", Random.Range(0,4),spawnWait);
 	}
 
     public void Update()
     {
-
+        //NORMCORE - Multiplayer Script - if connected Spawn Objects
         if (connectedSpawn)
         {
+
+            //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
             InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
             connectedSpawn = false;
         }
@@ -60,11 +61,12 @@ public class Spawner : MonoBehaviour {
         }
     }
 
+    //NORMCORE - Multiplayer Script
     private void DidConnectToRoom(Realtime realtime)
     {
-        Debug.Log("Connected to room, again, is this needed?");
         connectedSpawn = true;
     }
+
 
     public void GenerateObject()
     {
@@ -72,6 +74,7 @@ public class Spawner : MonoBehaviour {
         //Instantiate(ObjectToSpawn.prefab, spawnLocations[Random.Range(0,3)].position, transform.rotation * Quaternion.Euler(-90f, 0f, 0f));
         //ObjectToSpawn.transform.localScale = Vector3.one * Random.Range(objectSizeMin, objectSizeMax);
 
+        //NORMCORE - Multiplayer Script for Instantiation
         Realtime.Instantiate("BabyBottle",                 // Prefab name
                                 position: spawnLocations[Random.Range(0, 3)].position,          // Start 1 meter in the air
                                 rotation: transform.rotation * Quaternion.Euler(-90f, 0f, 0f), // No rotation
