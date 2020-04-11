@@ -47,7 +47,14 @@ public class Spawner : MonoBehaviour {
         // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
 
-        PoolSystem(5, babyBottle);
+        if (connectedSpawn)
+        {
+
+            //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
+            // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
+            PoolSystem(5);
+            connectedSpawn = false;
+        }
 
     }
 
@@ -58,7 +65,8 @@ public class Spawner : MonoBehaviour {
         {
 
             //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
-            InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
+            // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
+            // TODO - Revert this if pool system fails
             connectedSpawn = false;
         }
         //if its been long enough, reactivate the fork
@@ -77,14 +85,14 @@ public class Spawner : MonoBehaviour {
     }
 
 
-    public void GenerateObject()
+    public GameObject GenerateObject()
     {
         //removing this version of instantiate to make room for the multiplayer version
         //Instantiate(ObjectToSpawn.prefab, spawnLocations[Random.Range(0,3)].position, transform.rotation * Quaternion.Euler(-90f, 0f, 0f));
         //ObjectToSpawn.transform.localScale = Vector3.one * Random.Range(objectSizeMin, objectSizeMax);
 
         //NORMCORE - Multiplayer Script for Instantiation
-        Realtime.Instantiate("BabyBottle",                 // Prefab name
+        return Realtime.Instantiate("BabyBottle",                 // Prefab name
                                 position: spawnLocations[Random.Range(0, 3)].position,          // Start 1 meter in the air
                                 rotation: transform.rotation * Quaternion.Euler(-90f, 0f, 0f), // No rotation
                            ownedByClient: false,   // Make sure the RealtimeView on this prefab is owned by this client
@@ -92,12 +100,12 @@ public class Spawner : MonoBehaviour {
                             useInstance: _realtime);
     }
 
-    public void PoolSystem(int size, GameObject prefab)
+    public void PoolSystem(int size)
     {
         throwList = new List<GameObject>();
         for (int i = 0; i < size; i++)
         {
-            GameObject obj = (GameObject)Instantiate(prefab);
+            GameObject obj = GenerateObject();
             throwList.Add(obj);
         }
     }
