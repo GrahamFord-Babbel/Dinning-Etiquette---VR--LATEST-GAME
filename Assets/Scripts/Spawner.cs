@@ -30,6 +30,16 @@ public class Spawner : MonoBehaviour {
 
     //Game Object throwing list
     public List<GameObject> throwList;
+    //create a amount for the list (adjustable)
+    [Range(0,50)]
+    public int bottleStartAmount;
+
+    //bool of if all bottles active to stop coroutine
+    public bool allBottlesActive;
+
+    //hold random value - to prevent instantiating in same position
+    public int previousRange;
+    public int nextRandomRange;
 
     private void Awake()
     {
@@ -47,28 +57,49 @@ public class Spawner : MonoBehaviour {
         // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
 
-        if (connectedSpawn)
-        {
-
-            //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
-            // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
-            PoolSystem(5);
-            connectedSpawn = false;
-        }
+        //TODO: is there a way to put the PoolSystem here
 
     }
 
     public void Update()
     {
-        //NORMCORE - Multiplayer Script - if connected Spawn Objects
+        //HAS RACE CONDITION with DIDCONNECTTOROOM in start 4.11
         if (connectedSpawn)
         {
 
             //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
             // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
-            // TODO - Revert this if pool system fails
+
+            //create usable list of throwable objects
+            PoolSystem(bottleStartAmount);
+            print("PoolHappened");
+
+            //activate bottles every spawnWait time
+            //InvokeRepeating("ActivateBottles", Random.Range(0, 4), spawnWait);
+
             connectedSpawn = false;
         }
+
+        if(allBottlesActive == true)
+        {
+            //StopCoroutine
+            StopCoroutine(ActivateObjectsTimer(spawnWait));
+        }
+        else //when object is picked up by Dad, allBottlesActive set to false
+        {
+            //StartCoroutine
+            StartCoroutine(ActivateObjectsTimer(spawnWait));
+        }
+
+        ////NORMCORE - Multiplayer Script - if connected Spawn Objects
+        //if (connectedSpawn)
+        //{
+
+        //    //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
+        //    // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
+        //    // TODO - Revert this if pool system fails
+        //    connectedSpawn = false;
+        //}
         //if its been long enough, reactivate the fork
         if (Time.realtimeSinceStartup >= dropForkTime && !forkDropped)
         {
@@ -92,21 +123,75 @@ public class Spawner : MonoBehaviour {
         //ObjectToSpawn.transform.localScale = Vector3.one * Random.Range(objectSizeMin, objectSizeMax);
 
         //NORMCORE - Multiplayer Script for Instantiation
-        return Realtime.Instantiate("BabyBottle",                 // Prefab name
-                                position: spawnLocations[Random.Range(0, 3)].position,          // Start 1 meter in the air
+        babyBottle =  Realtime.Instantiate("BabyBottle",                 // Prefab name
+                                position: transform.position,          // Start 1 meter in the air
                                 rotation: transform.rotation * Quaternion.Euler(-90f, 0f, 0f), // No rotation
                            ownedByClient: false,   // Make sure the RealtimeView on this prefab is owned by this client
                preventOwnershipTakeover: true,                // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
                             useInstance: _realtime);
+
+        return babyBottle;
     }
 
-    public void PoolSystem(int size)
+    public void PoolSystem(int amount)
     {
         throwList = new List<GameObject>();
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < amount; i++)
         {
             GameObject obj = GenerateObject();
             throwList.Add(obj);
+            obj.SetActive(false);
         }
     }
-}
+
+    public void ActivateBottles()
+    {
+            RandomizeSpawn();
+
+            ////set position
+            //throwList[0].gameObject.transform.position = spawnLocations[nextRandomRange].position;
+
+            ////add object back to Baby Table
+            //throwList[0].SetActive(true);
+
+            //TODO - use this for something fun
+            foreach (GameObject bottle in throwList)
+            {
+                if(bottle.activeSelf == false)
+                {
+                    bottle.transform.position = spawnLocations[nextRandomRange].position;
+                    bottle.transform.rotation = transform.rotation * Quaternion.Euler(-90f, 0f, 0f);
+                    bottle.SetActive(true);
+
+                //can i use return in a Void Function? Or break?
+                return;
+                }
+                else
+                {
+                allBottlesActive = true;
+                }
+           }
+    }
+
+    void RandomizeSpawn()
+    {
+        //create a random number
+        nextRandomRange = Random.Range(0, 3);
+
+        //keep calculating random until not same as previous
+        while (previousRange == nextRandomRange)
+        {
+            nextRandomRange = Random.Range(0, 3);
+        }
+
+        //set previous number to be the number just used
+        previousRange = nextRandomRange;
+    }
+
+    // every x seconds perform the print()
+    private IEnumerator ActivateObjectsTimer(float waitTime)
+    {
+        ActivateBottles();
+        yield return new WaitForSeconds(waitTime);
+        }
+    }
