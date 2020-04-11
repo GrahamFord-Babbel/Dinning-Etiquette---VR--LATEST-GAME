@@ -20,10 +20,16 @@ public class Spawner : MonoBehaviour {
     public float spawnWait;
 
     //fork object for dropping
+    public GameObject babyBottle;
+
+    //fork object for dropping
     public GameObject fork;
 
     //let player know fork dropped (stop running active function)
     public bool forkDropped;
+
+    //Game Object throwing list
+    public List<GameObject> throwList;
 
     private void Awake()
     {
@@ -40,7 +46,10 @@ public class Spawner : MonoBehaviour {
 
         // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
-	}
+
+        PoolSystem(5, babyBottle);
+
+    }
 
     public void Update()
     {
@@ -81,5 +90,15 @@ public class Spawner : MonoBehaviour {
                            ownedByClient: false,   // Make sure the RealtimeView on this prefab is owned by this client
                preventOwnershipTakeover: true,                // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
                             useInstance: _realtime);
+    }
+
+    public void PoolSystem(int size, GameObject prefab)
+    {
+        throwList = new List<GameObject>();
+        for (int i = 0; i < size; i++)
+        {
+            GameObject obj = (GameObject)Instantiate(prefab);
+            throwList.Add(obj);
+        }
     }
 }
