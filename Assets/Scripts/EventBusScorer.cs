@@ -38,16 +38,16 @@ public class EventBusScorer : MonoBehaviour
                 //RACE Conflict - object getting delete before removed from list if player fast
                 //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
                 //{
-                    //DOES NOT WORK, because race condition with pickup removing it
-                    //destroy obj
-                    Destroy(objectHitter);
+                //DOES NOT WORK, because race condition with pickup removing it
+                //destroy obj - changing to disable (now that object pool is active)
+                objectHitter.SetActive(false);
                 //}
             }
             //RACE Conflict - object getting delete before removed from list if player fast
             else if (movementAI.enabled == false)
             {
                 //destroy obj
-                Destroy(objectHitter);
+                objectHitter.SetActive(false);
             }
             //SCORING ACTIONS
             if (objectHitter.tag == "BabyCollectible")
