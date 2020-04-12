@@ -2054,13 +2054,15 @@ MonoBehaviour:
   - {fileID: 364524735}
   - {fileID: 801333297}
   dropForkTime: 5
-  spawnWait: 5
+  spawnWait: 3
   babyBottle: {fileID: 855057462}
   fork: {fileID: 709826996}
   forkDropped: 0
   throwList: []
   bottleStartAmount: 5
   allBottlesActive: 0
+  countActive: 0
+  oneSetActive: 0
   previousRange: 0
   nextRandomRange: 0
 --- !u!4 &428235355
