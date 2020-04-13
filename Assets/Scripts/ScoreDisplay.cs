@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Normal.Realtime;
 
+[RealtimeModel]
 public class ScoreDisplay : MonoBehaviour
 {
 
@@ -10,6 +12,10 @@ public class ScoreDisplay : MonoBehaviour
     public ScoreKeeper scoreKeeper;
     public Text scoreText;
     public Text timeText;
+
+    //display score
+    [RealtimeProperty(1,false,true)]
+    private float _gameScore;
 
     // Use this for initialization
     void Start () {
@@ -20,8 +26,11 @@ public class ScoreDisplay : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //adjust gameScore from ScoreKeeper to here (because NORMCORE private restriction)
+        _gameScore = scoreKeeper.gameScore;
+
         //update the display to count updated score
-        scoreText.text = "Baby's Score: " + scoreKeeper.gameScore;
+        scoreText.text = "Baby's Score: " + _gameScore;
         timeText.text = "Time Remaining: " + scoreKeeper.timeRemaining;
     }
 }
