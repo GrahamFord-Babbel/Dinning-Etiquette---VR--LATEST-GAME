@@ -10,6 +10,7 @@ public class EventBusScorer : MonoBehaviour
 
     //get player objects that can be Hit
     public GameObject dadPlayer;
+    //a SHITTY way to hack both players not scoring to the NORMCORE server
     public GameObject babyPlayer;
     public GameObject enVironment;
     public GameObject forkZone;
@@ -24,42 +25,46 @@ public class EventBusScorer : MonoBehaviour
     //determine what value pointsChange should be based on data from collision events
     public void AssessScoreChange(GameObject objectHit, GameObject objectHitter)
     {
-        //based on if object hit Dad
-        if (objectHit == dadPlayer)
+        //added so Desktop version only keeps track of dad score - TODO: FIX THIS - need bettter solution
+        if (!babyPlayer.activeSelf)
         {
-            //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
-            if (movementAI.enabled)
+            //based on if object hit Dad
+            if (objectHit == dadPlayer)
             {
-                Debug.Log("DAT SHIT REMOVED BABY!");
-                //calls the pickup script
-                movementAI.PickUpObject(-1, objectHitter);
+                //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+                if (movementAI.enabled)
+                {
+                    Debug.Log("DAT SHIT REMOVED BABY!");
+                    //calls the pickup script
+                    movementAI.PickUpObject(-1, objectHitter);
 
-                //trying adding the below conditional if breaks again 3.23
-                //RACE Conflict - object getting delete before removed from list if player fast
-                //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
-                //{
+                    //trying adding the below conditional if breaks again 3.23
+                    //RACE Conflict - object getting delete before removed from list if player fast
+                    //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
+                    //{
                     //DOES NOT WORK, because race condition with pickup removing it
                     //destroy obj
                     Destroy(objectHitter);
-                //}
-            }
-            //RACE Conflict - object getting delete before removed from list if player fast
-            else if (movementAI.enabled == false)
-            {
-                //destroy obj
-                Destroy(objectHitter);
-            }
-            //SCORING ACTIONS
-            if (objectHitter.tag == "BabyCollectible")
-            {
-                pointsChanged = -1;
-            }
-            else if (objectHitter.tag == "BabyWeapon")
-            {
-                pointsChanged = 2;
-            }
+                    //}
+                }
+                //RACE Conflict - object getting delete before removed from list if player fast
+                else if (movementAI.enabled == false)
+                {
+                    //destroy obj
+                    Destroy(objectHitter);
+                }
+                //SCORING ACTIONS
+                if (objectHitter.tag == "BabyCollectible")
+                {
+                    pointsChanged = -1;
+                }
+                else if (objectHitter.tag == "BabyWeapon")
+                {
+                    pointsChanged = 2;
+                }
 
-            Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+                Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+            }
         }
 
         //based on if object hit forkzone
@@ -79,25 +84,30 @@ public class EventBusScorer : MonoBehaviour
             Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
         }
 
-        //based on if object hit environment
-        else if (objectHit == enVironment)
+        //added so VR version only keeps track of dad score - TODO: FIX THIS - need bettter solution
+        else if (babyPlayer.activeSelf)
         {
-            //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
-            if (movementAI.enabled)
+
+        //based on if object hit environment
+        if (objectHit == enVironment)
             {
-                Debug.Log("DAT SHIT ADDED BABY!");
-                //calls the pickup script
-                movementAI.PickUpObject(1, objectHitter);
+                //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+                if (movementAI.enabled)
+                {
+                    Debug.Log("DAT SHIT ADDED BABY!");
+                    //calls the pickup script
+                    movementAI.PickUpObject(1, objectHitter);
+                }
+
+                //SCORING ACTIONS
+                if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
+                {
+                    pointsChanged = 1;
+                }
+
+                Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+
             }
-
-            //SCORING ACTIONS
-            if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
-            {
-                pointsChanged = 1;
-            }
-
-            Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
-
         }
 
         //based on if object hit baby
