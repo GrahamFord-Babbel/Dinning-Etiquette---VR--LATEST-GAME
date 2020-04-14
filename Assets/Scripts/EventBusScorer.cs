@@ -117,13 +117,18 @@ public class EventBusScorer : MonoBehaviour
         }
 
         //once points to change score have been calculated, change the score
-        Scored(pointsChanged);
+        //TODO- once ScoreKeeper fully updated, remove Scored Function from here and change this to:
+        scoreKeeper.Scored(pointsChanged);
+
+        //TODO- delete this if ^ works
+        //Scored(pointsChanged);
     }
 
-    //FIGURE OUT HOW TO MAKE THIS CONDENSED VERSION OF THE TWO WORK:
-    public void Scored(int points)
-    {
-        scoreKeeper.gameScore += points;
-    }
+    ////TODO- delete this if ^ works
+    ////FIGURE OUT HOW TO MAKE THIS CONDENSED VERSION OF THE TWO WORK:
+    //public void Scored(int points)
+    //{
+    //    scoreKeeper.gameScore += points;
+    //}
 }
     
