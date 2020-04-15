@@ -50,15 +50,15 @@ public class EventBusScorer : MonoBehaviour
                     //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
                     //{
                     //DOES NOT WORK, because race condition with pickup removing it
-                    //destroy obj
-                    Destroy(objectHitter);
+                    //remove obj
+                    objectHitter.SetActive(false);
                     //}
                 }
                 //RACE Conflict - object getting delete before removed from list if player fast
                 else if (movementAI.enabled == false)
                 {
-                    //destroy obj
-                    Destroy(objectHitter);
+                    //remove obj
+                    objectHitter.SetActive(false);
                 }
                 //SCORING ACTIONS
                 if (objectHitter.tag == "BabyCollectible")
@@ -70,58 +70,60 @@ public class EventBusScorer : MonoBehaviour
                     pointsChanged = thrownOoIPoints;
                 }
 
-                Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+                Debug.Log("Points changed by " + pointsChanged + "because " + objectHitter + "hit " + objectHit);
             }
         }
 
-        //based on if object hit forkzone
-        else if (objectHit == forkZone)
-        {
-            if (objectHitter.tag == "BabyCollectible")
-            {
-                pointsChanged = babyPoints;
-            }
-            else if (objectHitter.tag == "BabyWeapon")
-            {
-                pointsChanged = -dadPoints;
-            }
-            //destroy obj
-            Destroy(objectHitter);
+        //disabling for time being, possibly use in future
+        ////based on if object hit forkzone
+        //if (objectHit == forkZone)
+        //{
+        //    if (objectHitter.tag == "BabyCollectible")
+        //    {
+        //        pointsChanged = babyPoints;
+        //    }
+        //    else if (objectHitter.tag == "BabyWeapon")
+        //    {
+        //        pointsChanged = -dadPoints;
+        //    }
+        //    //remove obj
+        //    objectHitter.SetActive(false);
 
-            Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
-        }
+        //    Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+        //}
 
         //added so VR version only keeps track of dad score - TODO: FIX THIS - need bettter solution
         else if (babyPlayer.activeSelf)
         {
 
-        //based on if object hit environment
-        if (objectHit == enVironment)
-            {
-                //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
-                if (movementAI.enabled)
+            //based on if object hit environment
+            if (objectHit == enVironment)
                 {
-                    Debug.Log("DAT SHIT ADDED BABY!");
-                    //calls the pickup script
-                    movementAI.PickUpObject(babyPoints, objectHitter);
-                }
+                    //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+                    if (movementAI.enabled)
+                    {
+                        Debug.Log("DAT SHIT ADDED BABY!");
+                        //calls the pickup script
+                        movementAI.PickUpObject(babyPoints, objectHitter);
+                    }
 
-                //SCORING ACTIONS
-                if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
-                {
-                    pointsChanged = babyPoints;
-                }
+                    //SCORING ACTIONS
+                    if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
+                    {
+                        pointsChanged = babyPoints;
+                    }
 
-                Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+                Debug.Log("Points changed by " + pointsChanged + "because " + objectHitter + "hit " + objectHit);
 
             }
         }
 
-        //based on if object hit baby
-        else if (objectHit == babyPlayer)
-        {
-            print("Who would hit a baby!");
-        }
+        //disabling for time being, possibly use in future
+        ////based on if object hit baby
+        //else if (objectHit == babyPlayer)
+        //{
+        //    print("Who would hit a baby!");
+        //}
 
         //once points to change score have been calculated, change the score
         //TODO- once ScoreKeeper fully updated, remove Scored Function from here and change this to:

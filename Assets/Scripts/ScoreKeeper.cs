@@ -11,6 +11,8 @@ public class ScoreKeeper : RealtimeComponent
     //get the Realtime Score Model
     private RealtimeScoreModel _model;
 
+    private bool doOnce;
+
 
     //addd the score model here
 
@@ -18,7 +20,6 @@ public class ScoreKeeper : RealtimeComponent
     public void Start()
     {
         gameScore = 0;
-
         //^change above to be reflective of the synced model...
         //doint think i can do this witthout doing the below set function
         //_model.gameScore = 0;
@@ -36,6 +37,13 @@ public class ScoreKeeper : RealtimeComponent
 
     public void Scored(int points)
     {
+
+        //to handle reseting the value to 0 on start (once connected to network)
+        if (!doOnce)
+        {
+            _model.gameScore = gameScore;
+            doOnce = true;
+        }
 
         //TODO- change the score model here
         //something like: 

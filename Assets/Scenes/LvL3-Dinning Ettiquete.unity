@@ -1280,9 +1280,9 @@ MonoBehaviour:
   babyPlayer: {fileID: 1465771003}
   enVironment: {fileID: 47216368}
   forkZone: {fileID: 1071480868}
-  dadPoints: 3
-  babyPoints: 1
-  thrownOoIPoints: 2
+  dadPoints: 1
+  babyPoints: 2
+  thrownOoIPoints: 3
   movementAI: {fileID: 919309619}
 --- !u!1001 &216354072
 PrefabInstance:
@@ -2098,7 +2098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _appKey: fa51227e-c767-415f-8a9f-928a8753728a
-  _roomToJoinOnStart: DinnerEtiquetteMainRoom
+  _roomToJoinOnStart: DinnerEtiquetteMainRoomScoreSync
   _joinRoomOnStart: 1
   _debugLogging: 0
 --- !u!224 &506728720 stripped
@@ -6464,7 +6464,7 @@ PrefabInstance:
     - target: {fileID: 6946260876249269327, guid: bb897e51ac6f007489c46c5c81452617,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.47
+      value: 2.45
       objectReference: {fileID: 0}
     - target: {fileID: 6946260876249269327, guid: bb897e51ac6f007489c46c5c81452617,
         type: 3}
