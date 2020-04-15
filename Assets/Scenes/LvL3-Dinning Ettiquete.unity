@@ -1280,6 +1280,9 @@ MonoBehaviour:
   babyPlayer: {fileID: 1465771003}
   enVironment: {fileID: 47216368}
   forkZone: {fileID: 1071480868}
+  dadPoints: 3
+  babyPoints: 1
+  thrownOoIPoints: 2
   movementAI: {fileID: 919309619}
 --- !u!1001 &216354072
 PrefabInstance:
@@ -2259,6 +2262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 571521137}
+  - component: {fileID: 571521138}
   - component: {fileID: 571521136}
   m_Layer: 0
   m_Name: ScoreKeeper
@@ -2279,7 +2283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ce05cc5877233499d1a1eb3a98bf0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameScore: 1
+  gameScore: 0
   timeRemaining: 0
 --- !u!4 &571521137
 Transform:
@@ -2296,6 +2300,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &571521138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571521135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1011e140c5c34458f64fd8ad5095b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _realtime: {fileID: 428235356}
+  _sceneViewUUID: 00502a9e73337b4c84a00182f96f203c
+  _sceneViewOwnedByCreatingClient: 0
+  _sceneViewPreventOwnershipTakeover: 0
+  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 0
+  _isRootPrefabView: 0
+  _components:
+  - componentID: 1
+    component: {fileID: 571521136}
+    componentIDHasBeenUsed: 1
+  _parentView: {fileID: 0}
+  _childViews: []
 --- !u!1 &592119967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5320,6 +5348,7 @@ MonoBehaviour:
   scoreKeeper: {fileID: 571521136}
   scoreText: {fileID: 522583970}
   timeText: {fileID: 2062198450}
+  gameScore: 0
 --- !u!1 &1954153598
 GameObject:
   m_ObjectHideFlags: 0
