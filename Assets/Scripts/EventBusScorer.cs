@@ -15,6 +15,13 @@ public class EventBusScorer : MonoBehaviour
     public GameObject enVironment;
     public GameObject forkZone;
 
+    //because parents are adults and it wouldnt be fair for the baby, so parent needs a handicap 
+    //potentially add more OoI (Objects of Interest) to instead give the baby an advantage to make even gameplay
+    //for gameplay designer to manipulate
+    public int dadPoints = 1;
+    public int babyPoints = 2;
+    public int thrownOoIPoints = 3; //Object of Interest - fork, car, anything non-standard
+
     //provide a value to control Score change
     private int pointsChanged;
 
@@ -36,7 +43,7 @@ public class EventBusScorer : MonoBehaviour
                 {
                     Debug.Log("DAT SHIT REMOVED BABY!");
                     //calls the pickup script
-                    movementAI.PickUpObject(-1, objectHitter);
+                    movementAI.PickUpObject(-dadPoints, objectHitter);
 
                     //trying adding the below conditional if breaks again 3.23
                     //RACE Conflict - object getting delete before removed from list if player fast
@@ -56,11 +63,11 @@ public class EventBusScorer : MonoBehaviour
                 //SCORING ACTIONS
                 if (objectHitter.tag == "BabyCollectible")
                 {
-                    pointsChanged = -1;
+                    pointsChanged = -dadPoints;
                 }
                 else if (objectHitter.tag == "BabyWeapon")
                 {
-                    pointsChanged = 2;
+                    pointsChanged = thrownOoIPoints;
                 }
 
                 Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
@@ -72,11 +79,11 @@ public class EventBusScorer : MonoBehaviour
         {
             if (objectHitter.tag == "BabyCollectible")
             {
-                pointsChanged = 1;
+                pointsChanged = babyPoints;
             }
             else if (objectHitter.tag == "BabyWeapon")
             {
-                pointsChanged = -1;
+                pointsChanged = -dadPoints;
             }
             //destroy obj
             Destroy(objectHitter);
@@ -96,13 +103,13 @@ public class EventBusScorer : MonoBehaviour
                 {
                     Debug.Log("DAT SHIT ADDED BABY!");
                     //calls the pickup script
-                    movementAI.PickUpObject(1, objectHitter);
+                    movementAI.PickUpObject(babyPoints, objectHitter);
                 }
 
                 //SCORING ACTIONS
                 if (objectHitter.tag == "BabyCollectible" || objectHitter.tag == "BabyWeapon")
                 {
-                    pointsChanged = 1;
+                    pointsChanged = babyPoints;
                 }
 
                 Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);

@@ -1275,11 +1275,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a0c7fdfb7776743b738446f95fa088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreKeeper: {fileID: 0}
+  scoreKeeper: {fileID: 571521136}
   dadPlayer: {fileID: 919309615}
   babyPlayer: {fileID: 1465771003}
   enVironment: {fileID: 47216368}
   forkZone: {fileID: 1071480868}
+  dadPoints: 3
+  babyPoints: 1
+  thrownOoIPoints: 2
   movementAI: {fileID: 919309619}
 --- !u!1001 &216354072
 PrefabInstance:

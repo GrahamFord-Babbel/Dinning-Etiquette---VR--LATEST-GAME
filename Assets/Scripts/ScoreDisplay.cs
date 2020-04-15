@@ -29,9 +29,12 @@ public partial class ScoreDisplay: MonoBehaviour
         //TODO- somehow collect the Score Model's Score data when it changes
         //gameScore = _scoreModel;
 
+        //added condition of this 4.14 after sync was working, if broken LOOK HERE
         //only change score if actually changed
-        //if(_)
-        gameScore = scoreKeeper.gameScore;
+        if(gameScore != scoreKeeper.gameScore)
+        {
+            gameScore = scoreKeeper.gameScore;
+        }
 
         //update the display to count updated score
         scoreText.text = "Baby's Score: " + gameScore;

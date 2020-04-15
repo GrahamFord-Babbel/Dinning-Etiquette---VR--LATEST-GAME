@@ -6,7 +6,7 @@ using Normal.Realtime.Serialization;
 [RealtimeModel]
 public partial class RealtimeScoreModel
 {
-    //display score
+    //network score for NORMCORE database
     [RealtimeProperty(1, false, true)]
     private float _gameScore;
 }
