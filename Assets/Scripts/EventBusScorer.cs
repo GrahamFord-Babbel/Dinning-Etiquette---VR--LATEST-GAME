@@ -50,15 +50,17 @@ public class EventBusScorer : MonoBehaviour
                     //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
                     //{
                     //DOES NOT WORK, because race condition with pickup removing it
-                    //remove obj
-                    objectHitter.SetActive(false);
+
+
+                    //remove obj - RESET LIVE
+                    //objectHitter.SetActive(false);
                     //}
                 }
                 //RACE Conflict - object getting delete before removed from list if player fast
                 else if (movementAI.enabled == false)
                 {
-                    //remove obj
-                    objectHitter.SetActive(false);
+                    //remove obj - RESET LIVE
+                    //objectHitter.SetActive(false);
                 }
                 //SCORING ACTIONS
                 if (objectHitter.tag == "BabyCollectible")
@@ -72,6 +74,9 @@ public class EventBusScorer : MonoBehaviour
 
                 Debug.Log("Points changed by " + pointsChanged + "because " + objectHitter + "hit " + objectHit);
             }
+
+            //nearly a redundancy, is there any way to resolve NORMCORE multiplayer and return to only calling this once?
+            scoreKeeper.Scored(pointsChanged);
         }
 
         //disabling for time being, possibly use in future
@@ -116,8 +121,20 @@ public class EventBusScorer : MonoBehaviour
                 Debug.Log("Points changed by " + pointsChanged + "because " + objectHitter + "hit " + objectHit);
 
             }
+            //nearly a redundancy, is there any way to resolve NORMCORE multiplayer and return to only calling this once?
+            scoreKeeper.Scored(pointsChanged);
+
         }
 
+        //CLEAR VALUE - doing this to eliminate the value being maintained and then being called unintentionally (aka dad not calls baby 2pt value)
+        pointsChanged = 0;
+
+
+        if (objectHit == dadPlayer)
+        {
+            //remove obj 
+            objectHitter.SetActive(false);
+        }
         //disabling for time being, possibly use in future
         ////based on if object hit baby
         //else if (objectHit == babyPlayer)
@@ -127,7 +144,7 @@ public class EventBusScorer : MonoBehaviour
 
         //once points to change score have been calculated, change the score
         //TODO- once ScoreKeeper fully updated, remove Scored Function from here and change this to:
-        scoreKeeper.Scored(pointsChanged);
+        //scoreKeeper.Scored(pointsChanged);
 
         //TODO- delete this if ^ works
         //Scored(pointsChanged);
