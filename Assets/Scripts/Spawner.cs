@@ -51,7 +51,6 @@ public class Spawner : MonoBehaviour {
         _realtime = GetComponent<Realtime>();
 
         _realtime.didConnectToRoom += DidConnectToRoom;
-
     }
 
     // Use this for initialization
@@ -89,7 +88,6 @@ public class Spawner : MonoBehaviour {
             connectedSpawn = false;
         }
 
-
         if (allBottlesActive == true)
         {
             //StopCoroutine
@@ -97,15 +95,6 @@ public class Spawner : MonoBehaviour {
             StopCoroutine(ActivateObjectsTimer(spawnWait));
         }
 
-        ////NORMCORE - Multiplayer Script - if connected Spawn Objects
-        //if (connectedSpawn)
-        //{
-
-        //    //Generate Bottle Objects - Rapid Prototyping (UPDATE to Object Pooling ASAP)
-        //    // InvokeRepeating("GenerateObject", Random.Range(0, 4), spawnWait);
-        //    // TODO - Revert this if pool system fails
-        //    connectedSpawn = false;
-        //}
         //if its been long enough, reactivate the fork
         if (Time.realtimeSinceStartup >= dropForkTime && !forkDropped)
         {
@@ -127,13 +116,8 @@ public class Spawner : MonoBehaviour {
         connectedSpawn = true;
     }
 
-
     public GameObject GenerateObject()
     {
-        //removing this version of instantiate to make room for the multiplayer version
-        //Instantiate(ObjectToSpawn.prefab, spawnLocations[Random.Range(0,3)].position, transform.rotation * Quaternion.Euler(-90f, 0f, 0f));
-        //ObjectToSpawn.transform.localScale = Vector3.one * Random.Range(objectSizeMin, objectSizeMax);
-
         //NORMCORE - Multiplayer Script for Instantiation
         babyBottle =  Realtime.Instantiate("BabyBottle",                 // Prefab name
                                 position: transform.position,          // Start 1 meter in the air
@@ -141,7 +125,6 @@ public class Spawner : MonoBehaviour {
                            ownedByClient: false,   // Make sure the RealtimeView on this prefab is owned by this client
                preventOwnershipTakeover: false,                // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
                             useInstance: _realtime);
-
         return babyBottle;
     }
 
@@ -158,47 +141,26 @@ public class Spawner : MonoBehaviour {
 
     public void ActivateBottles()
     {
-            RandomizeSpawn();
+        //create a random number to be used when spawning the bottles
+        RandomizeSpawn();
 
-        ////set position
-        //throwList[0].gameObject.transform.position = spawnLocations[nextRandomRange].position;
-
-        ////add object back to Baby Table
-        //throwList[0].SetActive(true);
-
-        //TODO - use this for something fun
+        //based on which bottles are active in the list, deactivate and activate
         foreach (GameObject bottle in throwList)
         {
-
-            //    for (int i = 0; i < throwList.Count; i++)
-            //    { 
-            //        if (throwList[i].activeSelf == true)
-            //        {
-            //            countActive++;
-            //        }
-            //}
             if (bottle.activeSelf == false && oneSetActive == false)
             {
-                //bottle.GetComponent<CubePl>
-                //._realtimeTransform.RequestOwnership();
-
-                //disable NORMCORE RT so you can relocate the object, will renable
-                //bottle.GetComponent<RealtimeTransform>().enabled = false;
+                //use the request Normcore function to allow player to control bottle objects position
                 bottle.GetComponent<RealtimeTransform>().RequestOwnership();
+
                 //relocate object - TODO: Need to add Realtime Transform to this somehow
                 bottle.transform.position = spawnLocations[nextRandomRange].position;
                 bottle.transform.rotation = transform.rotation * Quaternion.Euler(-90f, 0f, 0f);
                 bottle.SetActive(true);
+
                 //stop the pattern to repeat activating bottles
                 oneSetActive = true;
             }
 
-            //if (bottle.activeSelf == false // &&count)
-            //{
-            //    bottle.transform.position = spawnLocations[nextRandomRange].position;
-            //    bottle.transform.rotation = transform.rotation * Quaternion.Euler(-90f, 0f, 0f);
-            //    bottle.SetActive(true);
-            //}
             //if the last bottle is active, assume all bottles active (bad logic- TODO: Think better logic)
             if(throwList[throwList.Count-1].activeSelf)
                 {
@@ -210,10 +172,7 @@ public class Spawner : MonoBehaviour {
             {
                 print("doing nothing");
             }
-            //THIS IS NOT DOING ANYTHING - being ignored
-            //return;
         }
-        //return;
     }
 
     void RandomizeSpawn()
@@ -238,18 +197,10 @@ public class Spawner : MonoBehaviour {
         {
             ActivateBottles();
             yield return new WaitForSeconds(waitTime);
+
             //allow the pattern to repeat activating bottles
             oneSetActive = false;
             print("coroutine STILL running");
         }
     }
-
-    private IEnumerator TestRoutine (float waitTime)
-    {
-        //needs while TRUE to function
-        print("coroutine 2 STILL running");
-        yield return new WaitForSeconds(waitTime);
-        print("coroutine 3 STILL running");
-    }
-
-    }
+}

@@ -2,67 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Job Summary - An Event Bus (one singular hub) that collects input from multiple players and objects to guide increment or decrement of the score 
 public class EventBusScorer : MonoBehaviour
 {
 
-    //get scoreKeeper
+    //the RealtimeComponent we will use to collect changes in score and send to the Network
     public ScoreKeeper scoreKeeper;
 
-    //get player objects that can be Hit
+    //get items that can be Hit by thrown objects - to determine scoring value
     public GameObject dadPlayer;
-    //a SHITTY way to hack both players not scoring to the NORMCORE server
     public GameObject babyPlayer;
     public GameObject enVironment;
     public GameObject forkZone;
 
-    //because parents are adults and it wouldnt be fair for the baby, so parent needs a handicap 
-    //potentially add more OoI (Objects of Interest) to instead give the baby an advantage to make even gameplay
-    //for gameplay designer to manipulate
+    //for gameplay designer to manipulate - uneven points as if it were even, would 1:1 cancel out the baby's score, never allowing the VR headset to get to 50 and win
     public int dadPoints = 1;
     public int babyPoints = 2;
-    public int thrownOoIPoints = 3; //Object of Interest - fork, car, anything non-standard
+    public int thrownOoIPoints = 3; //Object of Interest - fork, car, anything non-standard (bonus points)
 
-    //provide a value to control Score change
+    //provide a value to control how much the score changes
     private int pointsChanged;
 
-    //get the MovementAI - to log positions of thrown objects for collection
+    //get the MovementAI - to log positions of thrown objects for collection in here
     public MovementAI movementAI;
-
 
     //determine what value pointsChange should be based on data from collision events
     public void AssessScoreChange(GameObject objectHit, GameObject objectHitter)
     {
-        //added so Desktop version only keeps track of dad score - TODO: FIX THIS - need bettter solution
+        //added so Desktop version only keeps track of dad score - TODO: FIX THIS - need more modular & flexible solution
         if (!babyPlayer.activeSelf)
         {
             //based on if object hit Dad
             if (objectHit == dadPlayer)
             {
-                //STARTING AI ACTIONS HERE - potentially move to seperate script/rename this script:
+                //only control dad location via AI if AI is active
+                //TODO 1 - potentially move to seperate script/rename this script
+                //TODO 2 - add a UI toggle for the player to turn this ON/OFF in Start Screen
                 if (movementAI.enabled)
                 {
-                    Debug.Log("DAT SHIT REMOVED BABY!");
-                    //calls the pickup script
+                    //moves dad AI to object to pickup
                     movementAI.PickUpObject(-dadPoints, objectHitter);
-
-                    //trying adding the below conditional if breaks again 3.23
-                    //RACE Conflict - object getting delete before removed from list if player fast
-                    //if (movementAI.listOfThrownObjects.Contains(objectHitter)) //MAY NOT WORK BECAUSE NEED OBJECT, not object transform
-                    //{
-                    //DOES NOT WORK, because race condition with pickup removing it
-
-
-                    //remove obj - RESET LIVE
-                    //objectHitter.SetActive(false);
-                    //}
                 }
-                //RACE Conflict - object getting delete before removed from list if player fast
+                //if AI not enabled - use this to deactivate the object 
                 else if (movementAI.enabled == false)
                 {
-                    //remove obj - RESET LIVE
-                    //objectHitter.SetActive(false);
+                    //remove obj
+                    objectHitter.SetActive(false);
                 }
-                //SCORING ACTIONS
+                //based on what object his dad, set the amount of points assigned
                 if (objectHitter.tag == "BabyCollectible")
                 {
                     pointsChanged = -dadPoints;
@@ -72,35 +59,18 @@ public class EventBusScorer : MonoBehaviour
                     pointsChanged = thrownOoIPoints;
                 }
 
+                //log all the details of the above actions in the Console
                 Debug.Log("Points changed by " + pointsChanged + "because " + objectHitter + "hit " + objectHit);
             }
 
+            //send the collected values to ScoreKeeper to adjust the score - score value is private on ScoreKeeper, so allows us to modify that value
             //nearly a redundancy, is there any way to resolve NORMCORE multiplayer and return to only calling this once?
             scoreKeeper.Scored(pointsChanged);
         }
 
-        //disabling for time being, possibly use in future
-        ////based on if object hit forkzone
-        //if (objectHit == forkZone)
-        //{
-        //    if (objectHitter.tag == "BabyCollectible")
-        //    {
-        //        pointsChanged = babyPoints;
-        //    }
-        //    else if (objectHitter.tag == "BabyWeapon")
-        //    {
-        //        pointsChanged = -dadPoints;
-        //    }
-        //    //remove obj
-        //    objectHitter.SetActive(false);
-
-        //    Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
-        //}
-
         //added so VR version only keeps track of dad score - TODO: FIX THIS - need bettter solution
         else if (babyPlayer.activeSelf)
         {
-
             //based on if object hit environment
             if (objectHit == enVironment)
                 {
@@ -123,38 +93,40 @@ public class EventBusScorer : MonoBehaviour
             }
             //nearly a redundancy, is there any way to resolve NORMCORE multiplayer and return to only calling this once?
             scoreKeeper.Scored(pointsChanged);
-
         }
 
         //CLEAR VALUE - doing this to eliminate the value being maintained and then being called unintentionally (aka dad not calls baby 2pt value)
         pointsChanged = 0;
-
 
         if (objectHit == dadPlayer)
         {
             //remove obj 
             objectHitter.SetActive(false);
         }
-        //disabling for time being, possibly use in future
-        ////based on if object hit baby
-        //else if (objectHit == babyPlayer)
-        //{
-        //    print("Who would hit a baby!");
-        //}
-
-        //once points to change score have been calculated, change the score
-        //TODO- once ScoreKeeper fully updated, remove Scored Function from here and change this to:
-        //scoreKeeper.Scored(pointsChanged);
-
-        //TODO- delete this if ^ works
-        //Scored(pointsChanged);
     }
-
-    ////TODO- delete this if ^ works
-    ////FIGURE OUT HOW TO MAKE THIS CONDENSED VERSION OF THE TWO WORK:
-    //public void Scored(int points)
-    //{
-    //    scoreKeeper.gameScore += points;
-    //}
 }
-    
+
+//TODO - renable for future USE - when more OoI are utilized
+////based on if object hit forkzone
+//if (objectHit == forkZone)
+//{
+//    if (objectHitter.tag == "BabyCollectible")
+//    {
+//        pointsChanged = babyPoints;
+//    }
+//    else if (objectHitter.tag == "BabyWeapon")
+//    {
+//        pointsChanged = -dadPoints;
+//    }
+//    //remove obj
+//    objectHitter.SetActive(false);
+
+//    Debug.Log("Points changed because " + objectHitter + "hit " + objectHit);
+//}
+
+//TODO - renable for future USE - intereacting with Baby player is a component
+////based on if object hit baby
+//else if (objectHit == babyPlayer)
+//{
+//    print("Who would hit a baby!");
+//}

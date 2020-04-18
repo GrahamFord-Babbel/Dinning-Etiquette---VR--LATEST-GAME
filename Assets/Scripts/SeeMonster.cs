@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Job Summary - fun visual that made Dad appear to be a monster if baby looking through telescope (removed for simplicity)
 public class SeeMonster : MonoBehaviour
 {
     public GameObject telescope;
@@ -11,12 +12,6 @@ public class SeeMonster : MonoBehaviour
     void Start()
     {
         //monster.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void OnTriggerEnter(Collider other)
