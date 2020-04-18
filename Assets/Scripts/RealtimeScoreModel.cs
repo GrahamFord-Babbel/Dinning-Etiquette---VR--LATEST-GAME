@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime.Serialization;
 
+//Job Summary - mantains the Network value of score
 [RealtimeModel]
 public partial class RealtimeScoreModel
 {

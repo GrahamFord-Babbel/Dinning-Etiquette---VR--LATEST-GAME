@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Job Summary - scriptable object to be used for anything the baby throws
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/SpawnManagerScriptableObject", order = 1)]
 public class SpawnManagerScriptableObject : ScriptableObject
 {

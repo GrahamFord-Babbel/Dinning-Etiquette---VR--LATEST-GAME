@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//Job Summary - responsible for managing the START/GAMEOVER UIs, updating the TimeRemaining, indicating to start spawning gameObjects on GameStart
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] uIs;
@@ -42,6 +43,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //keeps track of time remaining in game - TODO - add a multiplayer property (NORMCORE) for this value, currently non-synced
         if(startTimer == true)
         {
             currentTime += Time.deltaTime;
@@ -52,9 +54,12 @@ public class LevelManager : MonoBehaviour
         //start game/remove UIs
         if (Input.GetKeyDown(KeyCode.P))
         {
+            //check to see if keyboard working
+            Debug.Log("Player has pressed the START key");
 
-            print("space key was pressed");
-
+            //set the time back to normal
+            Time.timeScale = 1;
+   
                 foreach (GameObject UI in uIs)
                 {
                     UI.SetActive(false);
@@ -66,20 +71,21 @@ public class LevelManager : MonoBehaviour
             {
                 //reset gameover 
                 gameOver = false;
-                //print game over time
-                Debug.Log("Time is: " + currentTime);
                 //resent game over time
                 currentTime = 0;
                 //set timer to false while players rebegin
                 startTimer = false;
-                //gameOverScore = 0; already done in ScoreKeeper
+                //reload the scene - to easily reset all the values - TODO - Unload before Reloading?
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                //pause the game Time
+                Time.timeScale = 0;
             }
 
-            //start spawning bottles
+            //start spawning bottles - so VR headset can start throwing them
             spawner.SetActive(true);
         }
 
+        //to stop the players from continuing play by activating the UIs
         if(scoreKeeper.gameScore >= gameOverScore || currentTime >= gameOverTime)
         {
             foreach (GameObject UI in uIs)

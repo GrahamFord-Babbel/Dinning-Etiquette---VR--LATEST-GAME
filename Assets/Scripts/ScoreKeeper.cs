@@ -2,30 +2,29 @@
 using System.Collections;
 using Normal.Realtime;
 
+//Job Summary - change the private score value of our Realtime Component based on the actions in EvenBusScorer
 public class ScoreKeeper : RealtimeComponent
 {
-    //reason this is a float?
+    //a public instance of the gameScore so ScoreDisplay can access the value
+    //TODO - dig into the reason you initially set this up as Floats
     public float gameScore;
+
+    //to display how much time the players have till the game ends
     public float timeRemaining;
 
-    //get the Realtime Score Model
+    //the Realtime Model thats used to hold the score over the Network - has been setup in its own script due to Normcore protocol 
     private RealtimeScoreModel _model;
 
+    //due to the redundancy of using 2 instances of gameScore, using this bool to reset the private NORMCORE version to 0 using the public local value
     private bool doOnce;
 
-
-    //addd the score model here
-
-    //reset score if object data is persisting
     public void Start()
     {
+        //reset score if object data is persisting from previous game
         gameScore = 0;
-        //^change above to be reflective of the synced model...
-        //doint think i can do this witthout doing the below set function
-        //_model.gameScore = 0;
     }
 
-    ////set the realtime Score Model to be recognized as value - is this needed?
+    //set the realtime Score Model to be recognized as value - NORMCORE protocol
     private RealtimeScoreModel model
     {
         set
@@ -35,6 +34,7 @@ public class ScoreKeeper : RealtimeComponent
         }
     }
 
+    //alters the private value of gameScore on the Realtime model to update Network
     public void Scored(int points)
     {
 
@@ -45,12 +45,8 @@ public class ScoreKeeper : RealtimeComponent
             doOnce = true;
         }
 
-        //TODO- change the score model here
-        //something like: 
+        //gets points from EventBusScorer to update Network score - TODO - remove reduncancy of gameScore (find solution)
         _model.gameScore += points;
         gameScore = _model.gameScore;
-
-        //delete this
-        //scoreKeeper.gameScore += points;
     }
 }
